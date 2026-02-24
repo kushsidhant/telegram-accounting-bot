@@ -1,3 +1,7 @@
 python-telegram-bot
 gspread
+
 oauth2client
+SpeechRecognition
+pydub
+ffmpeg-python
