@@ -1,20 +1,27 @@
+import os
+import json
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
 from datetime import datetime
 
-TOKEN = "8777785921:AAEO5Ldw153-mClvvfT7NG2uWCg-h8JFm2g"
+# Get token & credentials from environment
+TOKEN = os.environ.get("BOT_TOKEN")
+credentials_json = os.environ.get("GOOGLE_CREDENTIALS")
+
+credentials_dict = json.loads(credentials_json)
+
 SHEET_NAME = "Bhartiyavibes Orders"
 
-# Google Sheets setup
 scope = [
     "https://spreadsheets.google.com/feeds",
     "https://www.googleapis.com/auth/drive"
 ]
 
-creds = ServiceAccountCredentials.from_json_keyfile_name(
-    "credentials.json", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(
+    credentials_dict, scope
+)
 
 client = gspread.authorize(creds)
 sheet = client.open(SHEET_NAME).sheet1
@@ -22,7 +29,6 @@ sheet = client.open(SHEET_NAME).sheet1
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
-
     parts = text.split(",")
 
     if len(parts) < 4:
