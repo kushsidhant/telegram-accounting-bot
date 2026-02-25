@@ -1,6 +1,7 @@
-python-telegram-bot
+python-telegram-bot==20.3
 gspread
 oauth2client
 SpeechRecognition
 pydub
 ffmpeg-python
+flask
